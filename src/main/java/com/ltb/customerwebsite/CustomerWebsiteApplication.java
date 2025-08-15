@@ -2,6 +2,11 @@ package com.ltb.customerwebsite;
 
 import com.ltb.customerwebsite.models.Customer;
 import com.ltb.customerwebsite.services.CustomerService;
+import com.ltb.customerwebsite.services.CustomerServiceImpl;
+import org.springframework.batch.core.Job;
+import org.springframework.batch.core.JobParameters;
+import org.springframework.batch.core.JobParametersBuilder;
+import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -12,41 +17,63 @@ import java.util.Arrays;
 @SpringBootApplication
 public class CustomerWebsiteApplication implements CommandLineRunner {
 
-	@Autowired
-	private CustomerService customerService;
+	private final JobLauncher jobLauncher;
+	private final Job job;
 
-	// The main method is defined here which will start your application.
+    public CustomerWebsiteApplication(JobLauncher jobLauncher, Job job) {
+        this.jobLauncher = jobLauncher;
+        this.job = job;
+    }
+
 	public static void main(String[] args) {
-		SpringApplication.run(CustomerWebsiteApplication.class);
+		SpringApplication.run(CustomerWebsiteApplication.class, args);
 	}
 
-	// You can also define a run method which performs an operation
-	// at runtime. In this example, the run method saves some Customer
-	// data into the database for testing.
-	@Override
+    @Override
 	public void run(String... args) throws Exception {
-		if (customerService.getAllCustomers().isEmpty()) {
-			customerService.saveAllCustomer(Arrays.asList(
-							Customer.builder()
-									.fullName("Customer 1")
-									.emailAddress("customer1@gmail.com")
-									.address("Customer Address One")
-									.age(30)
-									.build(),
-							Customer.builder()
-									.fullName("Customer 2")
-									.emailAddress("customer2@gmail.com")
-									.address("Customer Address Two")
-									.age(28)
-									.build(),
-							Customer.builder()
-									.fullName("Customer 3")
-									.emailAddress("customer3@gmail.com")
-									.address("Customer Address Three")
-									.age(32)
-									.build()
-					)
-			);
-		}
+		JobParameters jobParameters = new JobParametersBuilder()
+				.addLong("startAt", System.currentTimeMillis())
+				.toJobParameters();
+
+		jobLauncher.run(job, jobParameters);
 	}
 }
+
+//	@Autowired
+//	private CustomerServiceImpl customerServiceImpl;
+//
+//	// The main method is defined here which will start your application.
+//	public static void main(String[] args) {
+//		SpringApplication.run(CustomerWebsiteApplication.class);
+//	}
+//
+//	// You can also define a run method which performs an operation
+//	// at runtime. In this example, the run method saves some Customer
+//	// data into the database for testing.
+//	@Override
+//	public void run(String... args) throws Exception {
+//		if (customerServiceImpl.getAllCustomers().isEmpty()) {
+//			customerServiceImpl.saveAllCustomer(Arrays.asList(
+//							Customer.builder()
+//									.fullName("Customer 1")
+//									.emailAddress("customer1@gmail.com")
+//									.address("Customer Address One")
+//									.age(30)
+//									.build(),
+//							Customer.builder()
+//									.fullName("Customer 2")
+//									.emailAddress("customer2@gmail.com")
+//									.address("Customer Address Two")
+//									.age(28)
+//									.build(),
+//							Customer.builder()
+//									.fullName("Customer 3")
+//									.emailAddress("customer3@gmail.com")
+//									.address("Customer Address Three")
+//									.age(32)
+//									.build()
+//					)
+//			);
+//		}
+//	}
+//}
