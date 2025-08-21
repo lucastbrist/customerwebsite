@@ -4,6 +4,7 @@ import com.ltb.customerwebsite.models.Customer;
 import com.ltb.customerwebsite.repositories.CustomerRepository;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
+import org.springframework.batch.core.explore.JobExplorer;
 import org.springframework.batch.core.job.builder.JobBuilder;
 import org.springframework.batch.core.launch.support.RunIdIncrementer;
 import org.springframework.batch.core.repository.JobRepository;
@@ -39,6 +40,7 @@ public class BatchConfig {
                 .incrementer(new RunIdIncrementer())
                 .start(readStep)
                 .build();
+
     }
 
     @Bean
@@ -76,6 +78,8 @@ public class BatchConfig {
     public ItemWriter<Customer> writer(CustomerRepository customerRepository) {
         return customerRepository::saveAll;
     }
+
+
 
 }
 

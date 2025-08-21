@@ -3,6 +3,10 @@ package com.ltb.customerwebsite.controllers;
 import com.ltb.customerwebsite.models.Customer;
 import com.ltb.customerwebsite.services.CustomerService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.batch.core.Job;
+import org.springframework.batch.core.JobParameters;
+import org.springframework.batch.core.JobParametersBuilder;
+import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -13,6 +17,9 @@ import java.util.List;
 @Controller
 @RequiredArgsConstructor
 public class CustomerController {
+
+    private final JobLauncher jobLauncher;
+    private final Job job;
 
     private final CustomerService customerService;
 
@@ -87,5 +94,21 @@ public class CustomerController {
         customerService.deleteCustomer(id);
         return "redirect:/";
     }
+
+    @PostMapping("/startJob")
+    public String startJob(Model model) {
+        try {
+            JobParameters jobParameters = new JobParametersBuilder()
+                    .addLong("startAt", System.currentTimeMillis())
+                    .toJobParameters();
+
+            jobLauncher.run(job, jobParameters);
+            model.addAttribute("message", "Batch job started successfully!");
+        } catch (Exception e) {
+            model.addAttribute("message", "Failed to start batch job: " + e.getMessage());
+        }
+        return "index";
+    }
+
 
 }

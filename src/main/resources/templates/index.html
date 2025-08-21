@@ -42,14 +42,27 @@
                 <a th:href="@{/new}">Add New Customer</a>
                 <a th:href="@{'/edit/' + ${customer.id}}">Edit</a>
                 <a th:href="@{'/delete/' + ${customer.id}}">Delete</a>
-                <a th:text="${(customer.car == null) ? 'Assign Car' : ''}"
+                <a th:text="${(customer.rentalCar == null) ? 'Assign Car' : ''}"
                    th:href="@{'/cars/assign/' + ${customer.id}}"></a>
-                <a th:text="${(customer.car != null) ? 'Remove Car' : ''}"
-                   th:href="${(customer.car != null) ? '/remove/' + customer.rentalCar.getId() : ''}"></a>
+                <a th:text="${(customer.rentalCar != null) ? 'Remove Car' : ''}"
+                   th:href="${(customer.rentalCar != null) ? '/remove/' + customer.rentalCar.getId() : ''}"></a>
             </td>
         </tr>
         </tbody>
     </table>
+
+    <h1>Batch Job</h1>
+    <br/><br/>
+    <!-- Feedback message section -->
+    <div th:if="${message}">
+        <strong th:text="${message}"></strong>
+        <br/><br/>
+    </div>
+    <!-- Start Job Button Form -->
+    <form th:action="@{/startJob}" method="post">
+        <button type="submit" style="padding: 10px 30px; font-size: 18px;">Start Batch Job</button>
+    </form>
+
 </div>
 </body>
 </html>
