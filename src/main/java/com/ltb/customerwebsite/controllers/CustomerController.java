@@ -3,15 +3,15 @@ package com.ltb.customerwebsite.controllers;
 import com.ltb.customerwebsite.models.Customer;
 import com.ltb.customerwebsite.services.CustomerService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.batch.core.Job;
-import org.springframework.batch.core.JobParameters;
-import org.springframework.batch.core.JobParametersBuilder;
+import org.springframework.batch.core.*;
 import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.batch.core.explore.JobExplorer;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -20,6 +20,7 @@ public class CustomerController {
 
     private final JobLauncher jobLauncher;
     private final Job job;
+    private final JobExplorer jobExplorer;
 
     private final CustomerService customerService;
 
@@ -28,6 +29,13 @@ public class CustomerController {
 
         // call the service to retrieve all customers
         final List<Customer> customerList = customerService.getAllCustomers();
+
+        List<JobExecution> executions = new ArrayList<>();
+        List<JobInstance> jobInstances = jobExplorer.getJobInstances("customer-loader-job", 0, 10);
+        for (JobInstance jobInstance : jobInstances) {
+            executions.addAll(jobExplorer.getJobExecutions(jobInstance));
+        }
+        model.addAttribute("jobExecutions", executions);
 
         // once the customers are retrieved, you can
         // store them in model and return the view

@@ -63,6 +63,25 @@
         <button type="submit" style="padding: 10px 30px; font-size: 18px;">Start Batch Job</button>
     </form>
 
+    <h2>Batch Job History</h2>
+    <table border="1" cellpadding="10" style="margin: auto;">
+        <thead>
+        <tr>
+            <th>Execution ID</th>
+            <th>Status</th>
+            <th>Exit Code</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="exec : ${jobExecutions}">
+            <td th:text="${exec.id}">Execution ID</td>
+            <td th:text="${exec.status}">Status</td>
+            <td th:text="${exec.exitStatus.exitCode}">Exit Code</td>
+        </tr>
+        </tbody>
+    </table>
+
+
 </div>
 </body>
 </html>
