@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="utf-8"/>
     <title>Welcome</title>
@@ -8,10 +10,31 @@
 <div align="center">
     <h1>Welcome!</h1>
     <br/><br/>
-    <br/><br/>
     <a th:href="@{/register}" style="font-size: 18px; padding: 10px 30px; text-decoration: none; border: 1px solid #000; border-radius: 5px;">
         Register a New Account
     </a>
+    <br/><br/>
+
+    <div sec:authorize="hasRole('ROLE_ADMIN')">
+        <a th:href="@{/customer-list}" style="font-size: 18px; padding: 10px 30px; border: 1px solid green; border-radius: 5px; text-decoration: none;">
+            Admin Dashboard
+        </a>
+    </div>
+
+    <div sec:authorize="hasRole('ROLE_USER') and !hasRole('ROLE_ADMIN')">
+        <a th:href="@{/customer-view}" style="font-size: 18px; padding: 10px 30px; border: 1px solid blue; border-radius: 5px; text-decoration: none;">
+            User Dashboard
+        </a>
+    </div>
+
+    <div sec:authorize="isAuthenticated()">
+        <form th:action="@{/logout}" method="post" style="display: inline;">
+            <button type="submit" style="font-size: 16px;">Log out</button>
+        </form>
+    </div>
+    <div sec:authorize="isAnonymous()">
+        <a th:href="@{/login}" style="font-size: 16px;">Log in</a>
+    </div>
 </div>
 </body>
 </html>

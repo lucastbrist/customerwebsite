@@ -51,7 +51,7 @@ public class User implements UserDetails {
         this.authorities = authorities;
     }
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER)
     //@JoinColumn(name = "userId", nullable = false)
     private Collection<Role> authorities = new ArrayList<>();
 

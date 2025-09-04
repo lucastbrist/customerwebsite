@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="utf-8"/>
     <title>Customer Manager</title>
@@ -8,6 +8,15 @@
 <div align="center">
     <h1>Customer List</h1>
     <br/><br/>
+
+    <!-- Show link only if authenticated -->
+    <div sec:authorize="isAuthenticated()">
+        <a th:href="@{/}"
+           style="font-size: 18px; padding: 10px 25px; border: 1px solid #000; border-radius: 5px; text-decoration: none;">
+            Back to Home
+        </a>
+    </div>
+
     <table border="1" cellpadding="10">
         <thead>
         <tr>

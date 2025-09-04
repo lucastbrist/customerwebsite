@@ -3,7 +3,9 @@ package com.ltb.customerwebsite.repositories;
 import com.ltb.customerwebsite.models.Role;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.Optional;
+
 public interface RoleRepository extends JpaRepository<Role, Long> {
 
-    Role findByRole(Role.Roles role);
+    Optional<Role> findByRole(Role.Roles role);
 }
