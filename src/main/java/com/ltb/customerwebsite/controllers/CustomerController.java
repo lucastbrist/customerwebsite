@@ -26,6 +26,11 @@ public class CustomerController {
 
     @GetMapping("/")
     public String viewHomePage(Model model) {
+        return "index";
+    }
+
+    @GetMapping("/customer-list")
+    public String getCustomerList(Model model) {
 
         // call the service to retrieve all customers
         final List<Customer> customerList = customerService.getAllCustomers();
@@ -41,7 +46,7 @@ public class CustomerController {
         // store them in model and return the view
         model.addAttribute("customerList", customerList);
 
-        return "index";
+        return "customer-list";
     }
 
     @GetMapping("/new")
@@ -115,7 +120,7 @@ public class CustomerController {
         } catch (Exception e) {
             model.addAttribute("message", "Failed to start batch job: " + e.getMessage());
         }
-        return "index";
+        return "customer-list";
     }
 
 
